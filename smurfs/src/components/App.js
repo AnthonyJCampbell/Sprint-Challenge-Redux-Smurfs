@@ -1,17 +1,39 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
-import { getSmurfs } from './../actions/index';
+import { getSmurfs, addSmurf } from './../actions/index';
 
 import './App.css';
 
 class App extends Component {
+  smurfName = React.createRef();
+  smurfAge = React.createRef();
+  smurfHeight = React.createRef();
+
   componentDidMount() {
     this.props.getSmurfs();
   }
+  
+  onAddSmurf = (e) => {
+    e.preventDefault();
+    const name = this.smurfName.current;
+    const age = this.smurfAge.current;
+    const height = this.smurfHeight.current;
 
+    const newSmurf = {
+      name: name.value,
+      age: age.value,
+      height: height.value,
+    }
+
+    this.props.addSmurf(newSmurf);
+
+    name.value = '';
+    age.value = '';
+    height.value = '';
+  }
+  
   render() {
-    console.log(this.props.fetchingSmurfs)
     return this.props.fetchingSmurfs ? (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
@@ -22,7 +44,17 @@ class App extends Component {
     (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
-        <h2>CURRENT POPULATION OF SMURF VILLAGE: </h2>
+        <h2>CURRENT POPULATION OF SMURF VILLAGE: {this.props.smurfs.length}</h2>
+        
+        <form>
+          <input type="text" 
+            ref={this.smurfName}/>
+          <input type="text" 
+            ref={this.smurfAge} />
+          <input type="text" 
+              ref={this.smurfHeight} />
+          <button onClick={this.onAddSmurf}>Add Smurf</button>
+        </form>
         
         {this.props.smurfs.map((smurf, idx )=> {
           return (
@@ -41,12 +73,14 @@ const mapStateToProps = state => {
   return {
     fetchingSmurfs: state.fetchingSmurfs,
     smurfs: state.smurfs,
+    addingSmurf: state.addingSmurf,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return (bindActionCreators({
-    getSmurfs
+    getSmurfs,
+    addSmurf
   }, dispatch))
 }
 
