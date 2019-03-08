@@ -36,6 +36,7 @@ export const smurfReducer = (state = initialState, action) => {
         fetchingSmurfs: false,
         error: action.payload,
       }
+
     case types.ADDING_SMURFS:
       return {
         ...state,
@@ -53,6 +54,25 @@ export const smurfReducer = (state = initialState, action) => {
         addingSmurf: false,
         error: action.payload,
       }
+
+    case types.DELETING_SMURF:
+      return {
+        ...state,
+        deletingSmurf: true,
+      }
+    case types.DELETING_SMURF_SUCCESS:
+      return {
+        ...state,
+        deletingSmurf: false,
+        smurfs: action.payload,
+      }
+    case types.DELETING_SMURF_FAILURE:
+      return {
+        ...state,
+        deletingSmurf: false,
+        error: action.payload,
+      }
+      
     default:
       return state;
   }

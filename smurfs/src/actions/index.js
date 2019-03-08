@@ -10,6 +10,10 @@ export const GETTING_SMURFS_FAILURE = 'GETTING_SMURFS_FAILURE';
 export const ADDING_SMURFS = 'ADDING_SMURFS';
 export const ADDING_SMURFS_SUCCESS = 'ADDING_SMURFS_SUCCESS';
 export const ADDING_SMURFS_FAILURE = 'ADDING_SMURFS_FAILURE';
+
+export const DELETING_SMURF = 'DELETING_SMURF';
+export const DELETING_SMURF_SUCCESS = 'DELETING_SMURF_SUCCESS';
+export const DELETING_SMURF_FAILURE = 'DELETING_SMURF_FAILURE';
 /*
   For this project you'll need at least 2 action creators for the main portion,
    and 2 more for the stretch problem.
@@ -25,7 +29,6 @@ export const getSmurfs = () => dispatch => {
   dispatch({ type: GETTING_SMURFS });
   const request = axios.get(`http://localhost:3333/smurfs`);
     request.then(res => {
-        console.log("HERE ARE YOUR SMURFIN' SMURFS: ", res.data)
         dispatch({ type: GETTING_SMURFS_SUCCESS, payload: res.data})
       })
       .catch(err => {
@@ -42,11 +45,22 @@ export const addSmurf = (smurf) => dispatch => {
 
   const request = axios.post(`http://localhost:3333/smurfs`, smurf)
     request.then(res => {
-      console.log("OUR NEW SMURF ARRAY: ", res.data)
       dispatch({ type: ADDING_SMURFS_SUCCESS, payload: res.data })
     })
     .catch(err => {
       console.log("You gone and smurfed it all up! Something went wrong with adding your friend!")
       dispatch({ type: ADDING_SMURFS_FAILURE, payload: err})
+    })
+}
+
+export const deleteSmurf = (id) => dispatch => {
+  dispatch({ type: DELETING_SMURF });
+
+  const request = axios.delete(`http://localhost:3333/smurfs/${id}`)
+    request.then(res => {
+      dispatch({ type: DELETING_SMURF_SUCCESS, payload: res.data })
+    })
+    .catch(err => {
+      dispatch({ type: DELETING_SMURF_FAILURE, payload: err})
     })
 }

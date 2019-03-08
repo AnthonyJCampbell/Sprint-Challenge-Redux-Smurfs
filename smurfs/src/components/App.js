@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
-import { getSmurfs, addSmurf } from './../actions/index';
+import { getSmurfs, addSmurf, deleteSmurf } from './../actions/index';
 
 import './App.css';
 
@@ -32,6 +32,10 @@ class App extends Component {
     age.value = '';
     height.value = '';
   }
+
+  onDeleteSmurf = (id) => {
+    this.props.deleteSmurf(id);
+  }
   
   render() {
     return this.props.fetchingSmurfs ? (
@@ -56,10 +60,11 @@ class App extends Component {
           <button onClick={this.onAddSmurf}>Add Smurf</button>
         </form>
         
-        {this.props.smurfs.map((smurf, idx )=> {
+        {this.props.smurfs.map((smurf )=> {
           return (
-            <div key={idx} className="smurfContainer">
+            <div key={smurf.id} className="smurfContainer">
               <h4>{smurf.name} ({smurf.age})</h4>
+              <button onClick={() => this.onDeleteSmurf(smurf.id)}>DELETE</button>
             </div>
           )
         })}
@@ -80,7 +85,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return (bindActionCreators({
     getSmurfs,
-    addSmurf
+    addSmurf,
+    deleteSmurf
   }, dispatch))
 }
 
