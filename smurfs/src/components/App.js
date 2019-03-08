@@ -11,8 +11,15 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props)
-    return (
+    console.log(this.props.fetchingSmurfs)
+    return this.props.fetchingSmurfs ? (
+      <div className="App">
+        <h1>SMURFS! 2.0 W/ Redux</h1>
+        <h2>HEY! WE'RE STILL GETTING THE SMURFS ASSEMBLED. GIVE IT A SECOND, OKAY?</h2>
+      </div>
+    )
+    :
+    (
       <div className="App">
         <h1>SMURFS! 2.0 W/ Redux</h1>
         <h2>CURRENT POPULATION OF SMURF VILLAGE: </h2>
@@ -26,14 +33,14 @@ class App extends Component {
         })}
 
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
+    fetchingSmurfs: state.fetchingSmurfs,
     smurfs: state.smurfs,
-    fetchingSmurfs: state.smurf,
   }
 }
 
